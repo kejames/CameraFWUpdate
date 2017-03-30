@@ -1,10 +1,9 @@
-CFLAGS= -std=c99
-LIBS += -Lx86_64 -lrs_camera_usb -lusb -lpthread -lrt
+LIBS += -Lx86_64 -lrtsuvc -lusb-1.0 -lrtscamkit -lpthread
 
 all:dlfw
 
 dlfw:dlfw.c
-	gcc $(CFLAGS) -o $@ $^ $(LIBS)
+		gcc -o $@ $^ $(LIBS)
 
 clean:
-	rm dlfw
+		rm dlfw

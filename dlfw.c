@@ -1,31 +1,39 @@
 /*
  * Realtek Semiconductor Corp.
  *
- * dlfw.c
+ * utils/rts_utils.c
  *
  * Copyright (C) 2014      Ming Qian<ming_qian@realsil.com.cn>
  */
+
+#include <unistd.h> 
 #include <stdio.h>
 #include <stdlib.h>
 #include "dlfw.h"
 
 int main(int argc, char *argv[])
 {
-	uint16_t vid;
-	uint16_t pid;
-	char *fw;
+	int c;	
+	char *file_name;
+	int vid;
+	int pid;
+	int ret;
 
 	if (argc < 4) {
-		fprintf(stderr, "need argument: <vid> <pid> <fw>\n");
+		fprintf(stderr, "need argument: <file_name> \n");
 		return -1;
 	}
 
-	vid = (uint16_t)strtol(argv[1], NULL, 0);
-	pid = (uint16_t)strtol(argv[2], NULL, 0);
-	fw = argv[3];
+	file_name = argv[1];
+	vid = (int)strtol(argv[2], NULL, 0);
+	pid = (int)strtol(argv[3], NULL, 0);
 
-	if (vid && pid)
-		rts_set_vid_pid(vid, pid);
+	print_librtsuvc_version();
 
-	return rts_download_fw(fw, 0, 0);
+	ret = rts_dlfw_by_vidpid(file_name, vid, pid, 0, 0);
+	if (ret < 0)
+		fprintf(stderr, "download fail \n");
+	return ret;
 }
+
+
